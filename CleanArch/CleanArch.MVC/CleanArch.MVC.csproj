@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>aspnet-CleanArch.MVC-2AB1A2F1-F6A6-486C-BE5D-716D5B301C46</UserSecretsId>
+    <UserSecretsId>aspnet-CleanArch.MVC-D1269EAA-2BC9-4E8F-A160-C271B59D28C5</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
