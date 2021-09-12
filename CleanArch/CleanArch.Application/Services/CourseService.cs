@@ -1,4 +1,6 @@
-﻿using CleanArch.Application.Interfaces;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CleanArch.Application.Interfaces;
 using CleanArch.Application.ViewModels;
 using CleanArch.Domain.Commands;
 using CleanArch.Domain.Core.Bus;
@@ -11,29 +13,39 @@ namespace CleanArch.Application.Services
 {
     public class CourseService: ICourseService
     {
+        private readonly IMapper _autoMapper;
         private readonly ICourseRepository _courseRepository;
         private readonly IMediatorHandler _bus;
 
-        public CourseService(ICourseRepository courseRepository, IMediatorHandler bus)
+        public CourseService(ICourseRepository courseRepository, IMediatorHandler bus, IMapper autoMapper)
         {
             _courseRepository = courseRepository;
             _bus = bus;
+            _autoMapper = autoMapper;
         }
 
         public void Create(CourseViewModels courseViewModel)
         {
-            var createCourseCommand = new CreateCourseCommand(
-                courseViewModel.Name, courseViewModel.Description, courseViewModel.ImageUrl
-                );
-            _bus.SendCommand(createCourseCommand);
+            //var createCourseCommand = new CreateCourseCommand(
+            //    courseViewModel.Name, courseViewModel.Description, courseViewModel.ImageUrl
+            //    );
+            //_bus.SendCommand(createCourseCommand);
+
+            _bus.SendCommand(_autoMapper.Map<CreateCourseCommand>(courseViewModel));
         }
 
-        public CourseViewModels GetCourses()
+
+        //public CourseViewModels GetCourses()
+        //{
+        //    return new CourseViewModels()
+        //    {
+        //        Courses = _courseRepository.GetCourses()
+        //    };
+        //}
+
+        public IEnumerable<CourseViewModels> GetCourses()
         {
-            return new CourseViewModels()
-            {
-                Courses = _courseRepository.GetCourses()
-            };
+            return _courseRepository.GetCourses().ProjectTo<CourseViewModels>(_autoMapper.ConfigurationProvider);
         }
     }
 }
